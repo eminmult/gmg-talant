@@ -31,11 +31,7 @@ class TimelinePhaseResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('title_az')
-                    ->label('Başlıq (AZ)')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('title_en')
-                    ->label('Başlıq (EN)')
+                    ->label('Başlıq')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('date_label')
@@ -45,10 +41,7 @@ class TimelinePhaseResource extends Resource
                 Forms\Components\DatePicker::make('actual_date')
                     ->label('Faktiki tarix'),
                 Forms\Components\Textarea::make('description_az')
-                    ->label('Təsvir (AZ)')
-                    ->rows(2),
-                Forms\Components\Textarea::make('description_en')
-                    ->label('Təsvir (EN)')
+                    ->label('Təsvir')
                     ->rows(2),
                 Forms\Components\Select::make('status')
                     ->label('Status')
@@ -71,7 +64,7 @@ class TimelinePhaseResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title_az')
-                    ->label('Başlıq (AZ)')
+                    ->label('Başlıq')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('date_label')
                     ->label('Tarix'),

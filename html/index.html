@@ -2502,6 +2502,15 @@ let _siteTexts = {};
             const key = el.getAttribute('data-placeholder');
             if (t[key] !== undefined) el.placeholder = t[key];
         });
+        // Update timeline step statuses from API
+        document.querySelectorAll('.timeline-step').forEach((step, i) => {
+            const status = t['timeline_' + (i + 1) + '_status'];
+            if (status) {
+                step.classList.remove('active', 'done');
+                if (status === 'active') step.classList.add('active');
+                else if (status === 'done') step.classList.add('done');
+            }
+        });
         // Re-apply jury nav button if jury is logged in (texts overwrite it)
         if (typeof isJuryLoggedIn !== 'undefined' && isJuryLoggedIn && currentJuryMember) {
             document.getElementById('juryNavBtnText').textContent = currentJuryMember.name + ' (' + (t.jury_badge_label || 'Münsif') + ')';

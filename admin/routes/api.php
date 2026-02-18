@@ -190,9 +190,20 @@ Route::post('/jury/scores', function (Request $request) {
 });
 
 Route::get('/texts', function () {
-    return response()->json(
-        SiteText::pluck('value', 'key')
-    );
+    $texts = SiteText::pluck('value', 'key')->toArray();
+
+    // Merge timeline phases into texts so frontend data-text attributes work
+    $phases = \App\Models\TimelinePhase::orderBy('sort_order')->get();
+    foreach ($phases as $i => $phase) {
+        $n = $i + 1;
+        $texts["timeline_{$n}_title"] = $phase->title_az;
+        $texts["timeline_{$n}_date"] = $phase->date_label;
+        $texts["timeline_{$n}_desc"] = $phase->description_az ?? '';
+        $texts["timeline_{$n}_status"] = $phase->status;
+    }
+    $texts['timeline_count'] = $phases->count();
+
+    return response()->json($texts);
 });
 
 Route::get('/rules', function () {

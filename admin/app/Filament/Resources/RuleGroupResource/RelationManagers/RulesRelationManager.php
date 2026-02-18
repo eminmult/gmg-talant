@@ -20,11 +20,11 @@ class RulesRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('icon')
-                    ->label('İkon')
-                    ->maxLength(50)
-                    ->placeholder('1, 2, HD, 3\' və ya boş')
-                    ->helperText('Rəqəm və ya qısa mətn (SVG ikon avtomatik əlavə olunacaq)'),
+                Forms\Components\Textarea::make('icon')
+                    ->label('İkon (SVG və ya mətn)')
+                    ->rows(3)
+                    ->placeholder('SVG kod və ya qısa mətn (1, 2, HD ...)')
+                    ->helperText('SVG kod və ya rəqəm/qısa mətn daxil edin'),
                 Forms\Components\TextInput::make('title')
                     ->label('Başlıq')
                     ->required()
