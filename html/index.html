@@ -1,0 +1,3206 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GMG Talent Show</title>
+    <link rel="icon" type="image/svg+xml" href="assets/logo-icon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/api.js?render=6LfApm8sAAAAAK_4bvex-AebqGNnH9S7HF6Up9zA"></script>
+    <style>
+        /* ===== RESET & BASE ===== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --navy: #0f173c;
+            --red: #cb2b36;
+            --red-light: #e8343f;
+            --red-dark: #a1222b;
+            --white: #ffffff;
+            --gray-50: #f8f9fc;
+            --gray-100: #eef0f6;
+            --gray-200: #d8dce8;
+            --gray-300: #b0b8cc;
+            --gray-400: #8891a9;
+            --gray-500: #5a6380;
+            --navy-light: #1a2550;
+            --navy-dark: #0a0f2a;
+            --gradient: linear-gradient(135deg, var(--navy) 0%, var(--red) 100%);
+            --gradient-subtle: linear-gradient(135deg, var(--navy) 0%, #2a1a3c 50%, var(--red) 100%);
+            --shadow-sm: 0 2px 8px rgba(15, 23, 60, 0.08);
+            --shadow-md: 0 8px 30px rgba(15, 23, 60, 0.12);
+            --shadow-lg: 0 20px 60px rgba(15, 23, 60, 0.18);
+            --shadow-xl: 0 30px 80px rgba(15, 23, 60, 0.25);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --radius-lg: 24px;
+        }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gray-50);
+            color: var(--navy);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== DECORATIVE BACKGROUND PATTERN ===== */
+        .bg-pattern {
+            position: fixed;
+            top: -20%;
+            right: -10%;
+            width: 700px;
+            height: 700px;
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .bg-pattern svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ===== HEADER / NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1002;
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            box-shadow: 0 1px 20px rgba(15, 23, 60, 0.08);
+            padding: 10px 40px;
+        }
+        .navbar-logo img {
+            height: 36px;
+            transition: height 0.3s ease;
+        }
+        .navbar.scrolled .navbar-logo img { height: 30px; }
+        .navbar-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+        .navbar-links a {
+            text-decoration: none;
+            color: var(--white);
+            font-weight: 500;
+            font-size: 14px;
+            letter-spacing: 0.02em;
+            transition: color 0.3s;
+            position: relative;
+        }
+        .navbar.scrolled .navbar-links a { color: var(--navy); }
+        .navbar-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--red);
+            transition: width 0.3s ease;
+        }
+        .navbar-links a:hover::after { width: 100%; }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: var(--gradient-subtle);
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='1.5'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        .hero-particles {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            animation: float linear infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+        .hero-decoration {
+            position: absolute;
+            right: -100px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 600px;
+            height: 600px;
+            opacity: 0.08;
+        }
+        .hero-decoration-left {
+            position: absolute;
+            left: -200px;
+            bottom: -100px;
+            width: 400px;
+            height: 400px;
+            opacity: 0.05;
+            transform: rotate(45deg);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 8px 20px;
+            border-radius: 50px;
+            color: var(--white);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+        .hero-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--red);
+            border-radius: 50%;
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.5); }
+        }
+        .hero h1 {
+            font-size: clamp(42px, 7vw, 80px);
+            font-weight: 900;
+            color: var(--white);
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 24px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+        .hero h1 .accent {
+            background: linear-gradient(135deg, var(--red-light), #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p {
+            font-size: clamp(16px, 2vw, 20px);
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 560px;
+            margin: 0 auto 40px;
+            font-weight: 300;
+            line-height: 1.7;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--white);
+            color: var(--navy);
+            padding: 16px 36px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+        .hero-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.25);
+        }
+        .hero-cta svg { transition: transform 0.3s; }
+        .hero-cta:hover svg { transform: translateX(4px); }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            animation: fadeInUp 1s ease-out 1s both;
+        }
+        .scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+        @keyframes scrollPulse {
+            0%, 100% { opacity: 1; height: 40px; }
+            50% { opacity: 0.3; height: 20px; }
+        }
+
+        /* ===== TIMELINE BAR ===== */
+        .timeline-bar {
+            max-width: 1100px;
+            margin: -50px auto 0;
+            position: relative;
+            z-index: 10;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            padding: 40px 32px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+        }
+        .timeline-step {
+            text-align: center;
+            position: relative;
+            padding: 0 16px;
+        }
+        /* connecting line */
+        .timeline-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 24px;
+            right: -2px;
+            width: calc(100% - 48px);
+            height: 2px;
+            background: var(--gray-200);
+            transform: translateX(50%);
+        }
+        .timeline-step.active:not(:last-child)::after {
+            background: var(--gradient);
+        }
+        .timeline-num {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--gray-100);
+            color: var(--gray-400);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 800;
+            margin: 0 auto 16px;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s;
+        }
+        .timeline-step.active .timeline-num {
+            background: var(--gradient);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(203, 43, 54, 0.3);
+            animation: timelinePulse 2s ease-in-out infinite;
+        }
+        @keyframes timelinePulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(203, 43, 54, 0.4); }
+            50% { box-shadow: 0 0 0 12px rgba(203, 43, 54, 0); }
+        }
+        .timeline-step.done .timeline-num {
+            background: var(--navy);
+            color: var(--white);
+        }
+        .timeline-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--navy);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 6px;
+        }
+        .timeline-date {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--red);
+            margin-bottom: 8px;
+        }
+        .timeline-desc {
+            font-size: 12px;
+            color: var(--gray-400);
+            line-height: 1.5;
+        }
+        @media (max-width: 768px) {
+            .timeline-bar {
+                grid-template-columns: 1fr;
+                gap: 24px;
+                margin: -30px 16px 0;
+                padding: 28px 20px;
+            }
+            .timeline-step:not(:last-child)::after { display: none; }
+            .timeline-step {
+                display: grid;
+                grid-template-columns: 48px 1fr;
+                grid-template-rows: auto auto;
+                text-align: left;
+                gap: 0 16px;
+                padding: 0;
+            }
+            .timeline-num {
+                grid-row: 1 / 3;
+                margin: 0;
+                align-self: center;
+            }
+            .timeline-title { margin-bottom: 2px; }
+            .timeline-desc { grid-column: 2; }
+        }
+
+        /* ===== SECTION COMMON ===== */
+        section { position: relative; z-index: 1; }
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .section-tag {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--red);
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-size: clamp(28px, 4vw, 44px);
+            font-weight: 800;
+            color: var(--navy);
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+        }
+        .section-subtitle {
+            font-size: 16px;
+            color: var(--gray-400);
+            max-width: 520px;
+            margin: 16px auto 0;
+            font-weight: 400;
+        }
+
+        /* ===== VIDEO GRID ===== */
+        .videos-section {
+            padding: 120px 40px 100px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* Filter tabs */
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 48px;
+            flex-wrap: wrap;
+        }
+        .filter-tab {
+            padding: 10px 24px;
+            border-radius: 50px;
+            border: 1.5px solid var(--gray-200);
+            background: transparent;
+            color: var(--gray-500);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        .filter-tab:hover {
+            border-color: var(--navy);
+            color: var(--navy);
+        }
+        .filter-tab.active {
+            background: var(--navy);
+            border-color: var(--navy);
+            color: var(--white);
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+        }
+
+        /* ===== VIDEO CARD ===== */
+        .video-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .video-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .video-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+        .card-thumbnail {
+            position: relative;
+            aspect-ratio: 16/10;
+            overflow: hidden;
+            background: var(--gradient);
+        }
+        .card-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .video-card:hover .card-thumbnail img {
+            transform: scale(1.08);
+        }
+        .play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(15, 23, 60, 0.3);
+            opacity: 0;
+            transition: all 0.4s ease;
+        }
+        .video-card:hover .play-overlay {
+            opacity: 1;
+        }
+        .play-btn {
+            width: 64px;
+            height: 64px;
+            background: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .video-card:hover .play-btn {
+            transform: scale(1);
+        }
+        .play-btn svg { margin-left: 3px; }
+        .card-category {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 5px 14px;
+            background: rgba(15, 23, 60, 0.75);
+            backdrop-filter: blur(8px);
+            color: var(--white);
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 50px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .card-duration {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            padding: 4px 10px;
+            background: rgba(0, 0, 0, 0.65);
+            color: var(--white);
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 6px;
+        }
+        .card-body {
+            padding: 20px 22px;
+        }
+        .card-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+        .card-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 14px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .card-author-info { line-height: 1.3; }
+        .card-author-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+        }
+        .card-author-dept {
+            font-size: 12px;
+            color: var(--gray-400);
+        }
+        .card-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 8px;
+            line-height: 1.35;
+        }
+        .card-desc {
+            font-size: 13px;
+            color: var(--gray-400);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 16px;
+            border-top: 1px solid var(--gray-100);
+        }
+        .card-like-area {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+        }
+        .card-like-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            border: 1.5px solid var(--gray-200);
+            background: transparent;
+            color: var(--gray-400);
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+        .card-like-btn:hover {
+            border-color: var(--red);
+            color: var(--red);
+        }
+        .card-like-btn:hover .heart-icon {
+            transform: scale(1.2);
+        }
+        .card-like-btn .heart-icon {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .card-like-count {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--gray-400);
+            font-weight: 500;
+        }
+        .card-like-count svg {
+            width: 14px;
+            height: 14px;
+            opacity: 0.5;
+        }
+
+        /* ===== MODAL / POPUP ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 15, 42, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: var(--shadow-xl);
+        }
+        .modal-overlay.active .modal {
+            transform: scale(1) translateY(0);
+        }
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: none;
+            color: var(--white);
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+        .modal-video {
+            position: relative;
+            aspect-ratio: 16/9;
+            background: var(--navy-dark);
+        }
+        .modal-video video,
+        .modal-video iframe {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .modal-video-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.5);
+            gap: 12px;
+        }
+        .modal-video-placeholder svg {
+            width: 64px;
+            height: 64px;
+            opacity: 0.4;
+        }
+        .modal-body {
+            padding: 24px 32px 32px;
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 16px;
+        }
+        .modal-title {
+            font-size: clamp(18px, 5vw, 24px);
+            font-weight: 800;
+            color: var(--navy);
+            line-height: 1.3;
+        }
+        .modal-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-top: 8px;
+        }
+        .modal-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--gray-400);
+        }
+        .modal-meta-item svg { width: 16px; height: 16px; }
+        .modal-description {
+            font-size: 15px;
+            color: var(--gray-500);
+            line-height: 1.7;
+            margin-top: 20px;
+            margin-bottom: 0;
+        }
+
+        /* ===== LIKE IN MODAL ===== */
+        .rating-section {
+            background: var(--gray-50);
+            border-radius: var(--radius);
+            padding: 20px 28px;
+        }
+        .modal-like-area {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-shrink: 0;
+        }
+        .modal-jury-area {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-shrink: 0;
+        }
+        .modal-jury-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: 2px solid var(--gray-200);
+            background: var(--white);
+            color: var(--gray-500);
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+        }
+        .modal-jury-btn .jury-star-icon {
+            width: 24px;
+            height: 24px;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .modal-jury-btn:hover {
+            border-color: var(--red);
+            color: var(--red);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(203, 43, 54, 0.15);
+        }
+        .modal-jury-btn:hover .jury-star-icon {
+            transform: scale(1.25);
+        }
+        .modal-votes-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-shrink: 0;
+        }
+        .modal-like-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: 2px solid var(--gray-200);
+            background: var(--white);
+            color: var(--gray-500);
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+        }
+        .modal-like-btn:hover {
+            border-color: var(--red);
+            color: var(--red);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(203, 43, 54, 0.15);
+        }
+        .modal-like-btn .heart-icon {
+            width: 24px;
+            height: 24px;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .modal-like-btn:hover .heart-icon {
+            transform: scale(1.25);
+        }
+        .modal-like-btn.liked {
+            border-color: var(--red);
+            background: var(--red);
+            color: var(--white);
+            pointer-events: none;
+        }
+        @keyframes heartPop {
+            0% { transform: scale(1); }
+            30% { transform: scale(1.4); }
+            60% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+        .modal-like-btn.liked .heart-icon {
+            animation: heartPop 0.5s ease;
+        }
+        .modal-vote-count {
+            font-size: 15px;
+            color: var(--gray-400);
+            font-weight: 500;
+        }
+        .modal-vote-count strong {
+            color: var(--navy);
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        /* ===== EMAIL FORM ===== */
+        .email-gate {
+            display: none;
+            text-align: center;
+            animation: fadeInUp 0.4s ease;
+        }
+        .email-gate.show { display: block; }
+        .email-gate p {
+            font-size: 14px;
+            color: var(--gray-400);
+            margin-bottom: 16px;
+        }
+        .email-form {
+            display: flex;
+            gap: 10px;
+            max-width: 420px;
+            margin: 0 auto;
+        }
+        .email-input {
+            flex: 1;
+            padding: 14px 20px;
+            border: 2px solid var(--gray-200);
+            border-radius: 50px;
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--navy);
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .email-input:focus {
+            border-color: var(--red);
+        }
+        .email-input::placeholder {
+            color: var(--gray-300);
+        }
+        .email-submit {
+            padding: 14px 28px;
+            background: var(--red);
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+        .email-submit:hover {
+            background: var(--red-dark);
+            transform: translateY(-1px);
+        }
+        .vote-success {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            animation: fadeInUp 0.4s ease;
+        }
+        .vote-success.show { display: block; }
+        .vote-success .checkmark {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes scaleIn {
+            0% { transform: scale(0); }
+            100% { transform: scale(1); }
+        }
+        .vote-success h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+        .vote-success p {
+            color: var(--gray-400);
+            font-size: 14px;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: var(--navy-dark);
+            color: rgba(255, 255, 255, 0.5);
+            padding: 60px 40px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient);
+        }
+        .footer-logo {
+            margin-bottom: 20px;
+        }
+        .footer-logo img {
+            height: 32px;
+            opacity: 0.7;
+        }
+        .footer p {
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 24px;
+            list-style: none;
+        }
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.3s;
+        }
+        .footer-links a:hover { color: var(--white); }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .video-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            .stats-bar { max-width: 700px; margin-top: -40px; }
+        }
+        @media (max-width: 768px) {
+            .navbar { padding: 12px 20px; }
+            .navbar.scrolled { padding: 8px 20px; }
+            .navbar-links { display: none; }
+            .hero-content { padding: 0 16px; }
+            .hero-cta { padding: 14px 28px; font-size: 14px; }
+            .hero-scroll { bottom: 24px; }
+            .videos-section { padding: 80px 16px 60px; }
+            .video-grid { grid-template-columns: 1fr; gap: 20px; }
+            .stats-bar {
+                grid-template-columns: 1fr;
+                margin: -30px 16px 0;
+                border-radius: var(--radius);
+            }
+            .stat-item:not(:last-child)::after {
+                right: 15%;
+                top: auto;
+                bottom: 0;
+                height: 1px;
+                width: 70%;
+            }
+            .stat-item { padding: 20px; }
+            .stat-number { font-size: 28px; }
+            .modal-body { padding: 20px 16px; }
+            .modal-header { flex-direction: column; align-items: flex-start; gap: 14px; }
+            .modal-votes-row { width: 100%; }
+            .modal-like-area { width: 100%; }
+            .modal-jury-area { width: 100%; }
+            .modal-like-btn { padding: 10px 18px; font-size: 14px; }
+            .modal-jury-btn { padding: 10px 18px; font-size: 14px; }
+            .modal-description { font-size: 14px; }
+            .rating-section { padding: 16px; }
+            .email-form { flex-direction: column; }
+            .email-input { padding: 12px 16px; }
+            .email-submit { padding: 12px 24px; }
+            .filter-tabs { gap: 6px; }
+            .filter-tab { padding: 8px 16px; font-size: 12px; }
+            .footer { padding: 40px 20px 30px; }
+            .footer-links { gap: 16px; flex-wrap: wrap; }
+            .section-header { margin-bottom: 40px; }
+            .section-subtitle { font-size: 14px; }
+            .card-body { padding: 16px; }
+            .card-title { font-size: 16px; }
+            .card-like-btn { padding: 6px 14px; font-size: 12px; }
+        }
+        @media (max-width: 480px) {
+            .hero h1 { margin-bottom: 16px; }
+            .hero p { margin-bottom: 28px; font-size: 14px; }
+            .hero-badge { padding: 6px 14px; font-size: 11px; margin-bottom: 24px; }
+            .hero-cta { padding: 12px 24px; font-size: 13px; gap: 8px; }
+            .hero-scroll { display: none; }
+            .timeline-bar { margin: -20px 12px 0; padding: 20px 14px; gap: 18px; }
+            .timeline-num { width: 40px; height: 40px; font-size: 16px; }
+            .timeline-step { grid-template-columns: 40px 1fr; }
+            .timeline-title { font-size: 12px; }
+            .timeline-date { font-size: 12px; }
+            .timeline-desc { font-size: 11px; }
+            .videos-section { padding: 60px 12px 40px; }
+            .section-title { line-height: 1.2; }
+            .section-subtitle { font-size: 13px; }
+            .section-header { margin-bottom: 28px; }
+            .filter-tab { padding: 6px 12px; font-size: 11px; }
+            .video-grid { gap: 16px; }
+            .card-body { padding: 14px; }
+            .card-avatar { width: 32px; height: 32px; font-size: 12px; }
+            .card-author-name { font-size: 13px; }
+            .card-author-dept { font-size: 11px; }
+            .card-title { font-size: 15px; }
+            .card-desc { font-size: 12px; margin-bottom: 12px; }
+            .card-like-btn { padding: 6px 12px; font-size: 11px; gap: 6px; }
+            .card-like-count { font-size: 12px; }
+            .modal-overlay { padding: 10px; }
+            .modal { border-radius: var(--radius); max-height: 95vh; }
+            .modal-body { padding: 16px 12px; }
+            .modal-title { font-size: 18px; }
+            .modal-meta { gap: 10px; flex-wrap: wrap; }
+            .modal-meta-item { font-size: 12px; }
+            .modal-like-btn { padding: 8px 14px; font-size: 13px; }
+            .modal-jury-btn { padding: 8px 14px; font-size: 13px; }
+            .modal-vote-count { font-size: 13px; }
+            .modal-vote-count strong { font-size: 16px; }
+            .modal-description { font-size: 13px; }
+            .rating-section { padding: 12px; }
+            .email-gate p { font-size: 13px; }
+            .email-input { padding: 11px 14px; font-size: 13px; }
+            .email-submit { padding: 11px 20px; font-size: 13px; }
+            .rules-section { padding: 50px 12px; }
+            .rule-card { padding: 16px; gap: 14px; }
+            .rule-number { width: 38px; height: 38px; min-width: 38px; font-size: 16px; border-radius: 10px; }
+            .rule-content h3 { font-size: 14px; }
+            .rule-content p { font-size: 13px; }
+            .apply-section { padding: 50px 12px; }
+            .apply-form { padding: 18px; }
+            .form-label { font-size: 12px; }
+            .form-input, .form-select, .form-textarea { padding: 11px 14px; font-size: 13px; }
+            .form-submit { padding: 14px; font-size: 14px; }
+            .file-upload-content { padding: 24px 14px; }
+            .file-upload-text { font-size: 13px; }
+            .file-upload-hint { font-size: 11px; }
+            .footer { padding: 30px 16px 24px; }
+            .footer-logo img { height: 26px; }
+            .footer p { font-size: 12px; }
+            .footer-links { gap: 12px; }
+            .footer-links a { font-size: 12px; }
+            .jury-login-overlay { padding: 10px; }
+            .jury-login-box { padding: 28px 18px; }
+            .jury-login-box h2 { font-size: 20px; }
+            .jury-login-box p { font-size: 13px; }
+            .jury-login-input { padding: 12px 16px; font-size: 13px; }
+            .jury-login-submit { padding: 12px; font-size: 14px; }
+            .jury-rating-overlay { padding: 10px; }
+            .jury-rating-modal { max-height: 95vh; }
+            .jury-rating-body { padding: 16px; }
+            .jury-rating-info-text h3 { font-size: 16px; }
+            .jury-criteria-label { font-size: 13px; }
+            .jury-criteria-value { font-size: 17px; }
+            .jury-average-score { font-size: 24px; }
+            .jury-average-label { font-size: 13px; }
+            .jury-submit-btn { padding: 14px; font-size: 14px; }
+        }
+
+        /* ===== MOBILE MENU BURGER ===== */
+        .burger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 4px;
+            z-index: 1002;
+        }
+        .burger span {
+            width: 24px;
+            height: 2px;
+            background: var(--white);
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+        .navbar.scrolled .burger span { background: var(--navy); }
+        .burger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .burger.open span:nth-child(2) { opacity: 0; }
+        .burger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+        .burger.open span { background: var(--white) !important; }
+        .navbar.menu-open { background: transparent !important; box-shadow: none !important; backdrop-filter: none !important; }
+        .navbar.menu-open .navbar-logo img { filter: brightness(0) invert(1); }
+        .navbar.menu-open .jury-nav-btn { border-color: rgba(255,255,255,0.4); color: var(--white); }
+        @media (max-width: 768px) {
+            .burger { display: flex; }
+        }
+
+        /* ===== MOBILE MENU OVERLAY ===== */
+        .mobile-menu {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 60, 0.97);
+            backdrop-filter: blur(16px);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.35s ease;
+        }
+        .mobile-menu.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .mobile-menu a {
+            text-decoration: none;
+            color: var(--white);
+            font-size: 22px;
+            font-weight: 600;
+            padding: 16px 0;
+            letter-spacing: 0.02em;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease, color 0.2s;
+        }
+        .mobile-menu.active a {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .mobile-menu.active a:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-menu.active a:nth-child(2) { transition-delay: 0.15s; }
+        .mobile-menu.active a:nth-child(3) { transition-delay: 0.2s; }
+        .mobile-menu.active a:nth-child(4) { transition-delay: 0.25s; }
+        .mobile-menu a:hover { color: var(--red-light); }
+
+        /* ===== RULES SECTION ===== */
+        .rules-section {
+            padding: 100px 40px;
+            background: var(--white);
+            position: relative;
+            z-index: 1;
+        }
+        .rules-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            counter-reset: rule;
+        }
+        .rule-card {
+            display: flex;
+            gap: 20px;
+            padding: 28px;
+            background: var(--gray-50);
+            border-radius: var(--radius);
+            transition: all 0.3s ease;
+            counter-increment: rule;
+        }
+        .rule-card:hover {
+            background: var(--white);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-3px);
+        }
+        .rule-number {
+            width: 44px;
+            height: 44px;
+            min-width: 44px;
+            border-radius: 12px;
+            background: var(--gradient);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 800;
+        }
+        .rule-content h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 6px;
+        }
+        .rule-content p {
+            font-size: 14px;
+            color: var(--gray-400);
+            line-height: 1.6;
+        }
+        @media (max-width: 768px) {
+            .rules-section { padding: 60px 16px; }
+            .rules-grid { grid-template-columns: 1fr; }
+            .rule-card { padding: 20px; }
+        }
+
+        /* ===== APPLY SECTION ===== */
+        .apply-section {
+            padding: 100px 40px;
+            background: var(--gray-50);
+            position: relative;
+            z-index: 1;
+        }
+        .apply-container {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+        .apply-form {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            box-shadow: var(--shadow-md);
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 8px;
+            letter-spacing: 0.02em;
+        }
+        .form-label .required {
+            color: var(--red);
+            margin-left: 2px;
+        }
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 13px 18px;
+            border: 2px solid var(--gray-100);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--navy);
+            background: var(--white);
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            -webkit-appearance: none;
+        }
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            border-color: var(--red);
+            box-shadow: 0 0 0 4px rgba(203, 43, 54, 0.08);
+        }
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: var(--gray-300);
+        }
+        .form-select {
+            cursor: pointer;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%238891a9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 44px;
+        }
+        .form-select option[value=""] {
+            color: var(--gray-300);
+        }
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        .form-submit {
+            width: 100%;
+            padding: 16px;
+            background: var(--gradient);
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s;
+            margin-top: 8px;
+            letter-spacing: 0.02em;
+        }
+        .form-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(15, 23, 60, 0.2);
+        }
+        .form-submit:active {
+            transform: translateY(0);
+        }
+        .form-success {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            animation: fadeInUp 0.5s ease;
+        }
+        .form-success.show {
+            display: block;
+        }
+        .form-success .checkmark {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .form-success h3 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+        .form-success p {
+            color: var(--gray-400);
+            font-size: 15px;
+        }
+        .file-upload {
+            border: 2px dashed var(--gray-200);
+            border-radius: var(--radius-sm);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .file-upload:hover,
+        .file-upload.dragover {
+            border-color: var(--red);
+            background: rgba(203, 43, 54, 0.03);
+        }
+        .file-upload-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 32px 20px;
+        }
+        .file-upload-text {
+            font-size: 14px;
+            color: var(--gray-400);
+        }
+        .file-upload-text strong {
+            color: var(--red);
+            cursor: pointer;
+        }
+        .file-upload-hint {
+            font-size: 12px;
+            color: var(--gray-300);
+        }
+        .file-selected {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 20px;
+        }
+        .file-name {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .file-remove {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: none;
+            background: var(--gray-100);
+            color: var(--gray-500);
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+        .file-remove:hover {
+            background: var(--red);
+            color: var(--white);
+        }
+        @media (max-width: 768px) {
+            .apply-section { padding: 60px 16px; }
+            .apply-form { padding: 24px; }
+            .form-row { grid-template-columns: 1fr; }
+        }
+
+        /* Smooth card stagger */
+        .video-card:nth-child(1) { transition-delay: 0.05s; }
+        .video-card:nth-child(2) { transition-delay: 0.1s; }
+        .video-card:nth-child(3) { transition-delay: 0.15s; }
+        .video-card:nth-child(4) { transition-delay: 0.2s; }
+        .video-card:nth-child(5) { transition-delay: 0.25s; }
+        .video-card:nth-child(6) { transition-delay: 0.3s; }
+        .video-card:nth-child(7) { transition-delay: 0.35s; }
+        .video-card:nth-child(8) { transition-delay: 0.4s; }
+        .video-card:nth-child(9) { transition-delay: 0.45s; }
+
+        /* ===== JURY BUTTON (NAVBAR) ===== */
+        .jury-nav-btn {
+            padding: 8px 20px;
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            background: transparent;
+            color: var(--white);
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+        }
+        .jury-nav-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+        .navbar.scrolled .jury-nav-btn {
+            color: var(--navy);
+            border-color: var(--navy);
+        }
+        .navbar.scrolled .jury-nav-btn:hover {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        /* ===== JURY LOGIN MODAL ===== */
+        .jury-login-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 15, 42, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+        .jury-login-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .jury-login-box {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 48px 40px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: var(--shadow-xl);
+        }
+        .jury-login-overlay.active .jury-login-box {
+            transform: scale(1) translateY(0);
+        }
+        .jury-login-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        .jury-login-box h2 {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+        .jury-login-box p {
+            font-size: 14px;
+            color: var(--gray-400);
+            margin-bottom: 24px;
+        }
+        .jury-login-input {
+            width: 100%;
+            padding: 14px 20px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-family: inherit;
+            color: var(--navy);
+            outline: none;
+            transition: border-color 0.3s;
+            margin-bottom: 12px;
+        }
+        .jury-login-input::placeholder {
+            color: var(--gray-300);
+        }
+        .jury-login-input:focus {
+            border-color: var(--red);
+        }
+        .jury-login-input.error {
+            border-color: var(--red);
+            animation: shake 0.4s ease;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
+        }
+        .jury-login-submit {
+            width: 100%;
+            padding: 14px;
+            background: var(--gradient);
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        .jury-login-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(15, 23, 60, 0.2);
+        }
+        .jury-login-error {
+            color: var(--red);
+            font-size: 13px;
+            font-weight: 500;
+            margin-top: 12px;
+            display: none;
+        }
+        .jury-login-error.show {
+            display: block;
+            animation: fadeInUp 0.3s ease;
+        }
+        .jury-login-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: none;
+            color: var(--white);
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        .jury-login-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        /* ===== JURY DASHBOARD ===== */
+        .jury-dashboard {
+            display: none;
+            min-height: 100vh;
+            background: var(--gray-50);
+        }
+        .jury-dashboard.active {
+            display: block;
+        }
+        .jury-header {
+            background: var(--gradient-subtle);
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(15, 23, 60, 0.15);
+        }
+        .jury-header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .jury-header-left img {
+            height: 30px;
+        }
+        .jury-header-title {
+            color: var(--white);
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+        .jury-header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 4px 14px;
+            border-radius: 50px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .jury-logout-btn {
+            padding: 10px 24px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            color: var(--white);
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s;
+        }
+        .jury-logout-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .jury-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+        .jury-stats {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .jury-stat-card {
+            flex: 1;
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            box-shadow: var(--shadow-sm);
+        }
+        .jury-stat-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray-400);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 4px;
+        }
+        .jury-stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--navy);
+        }
+        .jury-stat-value .of-total {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--gray-300);
+        }
+        .jury-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .jury-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .jury-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+        .jury-card-thumb {
+            aspect-ratio: 16/10;
+            position: relative;
+            overflow: hidden;
+        }
+        .jury-card-body {
+            padding: 18px 20px;
+        }
+        .jury-card-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .jury-card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 14px;
+            line-height: 1.35;
+        }
+        .jury-rate-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--gradient);
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .jury-rate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(203, 43, 54, 0.3);
+        }
+        .jury-rate-btn.rated {
+            background: linear-gradient(135deg, #10b981, #34d399);
+            pointer-events: none;
+        }
+        .jury-rated-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            padding: 5px 14px;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            color: var(--white);
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 50px;
+            letter-spacing: 0.04em;
+            display: none;
+            align-items: center;
+            gap: 4px;
+            z-index: 2;
+        }
+        .jury-card.is-rated .jury-rated-badge {
+            display: inline-flex;
+        }
+        .jury-card-score {
+            display: none;
+            text-align: center;
+            padding: 8px 0 0;
+            font-size: 13px;
+            color: var(--gray-400);
+        }
+        .jury-card-score strong {
+            color: var(--navy);
+            font-size: 18px;
+            font-weight: 800;
+        }
+        .jury-card.is-rated .jury-card-score {
+            display: block;
+        }
+
+        /* ===== JURY RATING MODAL ===== */
+        .jury-rating-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 15, 42, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+        }
+        .jury-rating-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .jury-rating-modal {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            max-width: 640px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: var(--shadow-xl);
+        }
+        .jury-rating-overlay.active .jury-rating-modal {
+            transform: scale(1) translateY(0);
+        }
+        .jury-rating-video {
+            position: relative;
+            aspect-ratio: 16/9;
+            background: var(--navy-dark);
+        }
+        .jury-rating-close {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: none;
+            color: var(--white);
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 10;
+        }
+        .jury-rating-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+        .jury-rating-body {
+            padding: 24px 28px 28px;
+        }
+        .jury-rating-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--gray-100);
+        }
+        .jury-rating-info-text h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy);
+        }
+        .jury-rating-info-text span {
+            font-size: 13px;
+            color: var(--gray-400);
+        }
+        .jury-criteria-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        .jury-criteria-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .jury-criteria-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .jury-criteria-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--navy);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .jury-criteria-num {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+            background: var(--gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--gray-500);
+            flex-shrink: 0;
+        }
+        .jury-criteria-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--red);
+            min-width: 32px;
+            text-align: right;
+        }
+        .jury-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--gray-100);
+            outline: none;
+            transition: background 0.2s;
+        }
+        .jury-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--gradient);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(203, 43, 54, 0.3);
+            transition: transform 0.2s;
+        }
+        .jury-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+        .jury-slider::-moz-range-thumb {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--gradient);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 8px rgba(203, 43, 54, 0.3);
+        }
+        .jury-average-bar {
+            background: var(--gray-50);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .jury-average-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-500);
+        }
+        .jury-average-score {
+            font-size: 28px;
+            font-weight: 900;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .jury-submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--gradient);
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .jury-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(15, 23, 60, 0.2);
+        }
+        .jury-submit-btn:disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+        .jury-rating-success {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+            animation: fadeInUp 0.4s ease;
+        }
+        .jury-rating-success.show {
+            display: block;
+        }
+        .jury-rating-success .checkmark {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #10b981, #34d399);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .jury-rating-success h3 {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--navy);
+            margin-bottom: 6px;
+        }
+        .jury-rating-success p {
+            color: var(--gray-400);
+            font-size: 14px;
+        }
+
+        /* Responsive for jury */
+        @media (max-width: 1024px) {
+            .jury-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .jury-header { padding: 16px 20px; flex-wrap: wrap; gap: 12px; }
+            .jury-header-title { font-size: 15px; }
+            .jury-content { padding: 20px 16px; }
+            .jury-grid { grid-template-columns: 1fr; gap: 16px; }
+            .jury-stats { flex-direction: column; gap: 10px; }
+            .jury-stat-card { padding: 16px 20px; }
+            .jury-stat-value { font-size: 24px; }
+            .jury-login-box { padding: 32px 24px; }
+            .jury-rating-body { padding: 20px; }
+            .jury-nav-btn { padding: 6px 14px; font-size: 12px; }
+            .jury-card-body { padding: 14px 16px; }
+            .jury-card-title { font-size: 15px; margin-bottom: 12px; }
+        }
+        @media (max-width: 480px) {
+            .jury-header { padding: 12px 16px; }
+            .jury-header-left { gap: 10px; }
+            .jury-header-left img { height: 24px; }
+            .jury-header-title { font-size: 13px; }
+            .jury-header-badge { font-size: 11px; padding: 3px 10px; }
+            .jury-logout-btn { padding: 8px 16px; font-size: 12px; }
+            .jury-content { padding: 16px 12px; }
+            .jury-stat-card { padding: 14px 16px; }
+            .jury-stat-label { font-size: 11px; }
+            .jury-stat-value { font-size: 22px; }
+            .jury-grid { gap: 12px; }
+            .jury-card-body { padding: 12px 14px; }
+            .jury-rate-btn { padding: 10px; font-size: 13px; }
+        }
+        .grecaptcha-badge { visibility: hidden; }
+    </style>
+</head>
+<body>
+
+    <!-- Decorative background -->
+    <div class="bg-pattern">
+        <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M200 40c-44.2 0-80 35.8-80 80 0 30 16.5 56.1 40.9 69.8L200 280l39.1-90.2C263.5 176.1 280 150 280 120c0-44.2-35.8-80-80-80zm0 240l-39.1 90.2C184.5 383.9 200 410 200 410s15.5-26.1 39.1-39.8L200 280z" fill="var(--navy)" opacity="0.3"/>
+            <path d="M40 200c0-44.2 35.8-80 80-80 30 0 56.1 16.5 69.8 40.9L280 200l-90.2 39.1C176.1 263.5 150 280 120 280c-44.2 0-80-35.8-80-80zm240 0l90.2-39.1C383.9 184.5 410 200 410 200s-26.1 15.5-39.8 39.1L280 200z" fill="var(--red)" opacity="0.2"/>
+        </svg>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#videos" onclick="closeMobileMenu()" data-text="nav_talents">Talantlar</a>
+        <a href="#rules" onclick="closeMobileMenu()" data-text="nav_rules">Qaydalar</a>
+        <a href="#apply" onclick="closeMobileMenu()" data-text="nav_apply">İştirak et</a>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="navbar-logo">
+            <img src="assets/logo-white.svg" alt="GMG" class="logo-white">
+            <img src="assets/logo-dark.svg" alt="GMG" class="logo-dark" style="display:none">
+        </a>
+        <ul class="navbar-links">
+            <li><a href="#videos" data-text="nav_talents">Talantlar</a></li>
+            <li><a href="#rules" data-text="nav_rules">Qaydalar</a></li>
+            <li><a href="#apply" data-text="nav_apply">İştirak et</a></li>
+        </ul>
+        <div style="display:flex;align-items:center;gap:12px;">
+            <button class="jury-nav-btn" id="juryNavBtn" onclick="openJuryLogin()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/></svg>
+                <span id="juryNavBtnText" data-text="nav_jury_btn">Münsiflər Heyəti</span>
+            </button>
+            <div class="burger" id="burger" onclick="toggleMobileMenu()">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero" id="hero">
+        <div class="hero-particles" id="particles"></div>
+        <div class="hero-decoration">
+            <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M200 40c-44.2 0-80 35.8-80 80 0 30 16.5 56.1 40.9 69.8L200 280l39.1-90.2C263.5 176.1 280 150 280 120c0-44.2-35.8-80-80-80z" stroke="rgba(203,43,54,0.6)" stroke-width="3" fill="none"/>
+                <path d="M200 360c44.2 0 80-35.8 80-80 0-30-16.5-56.1-40.9-69.8L200 120l-39.1 90.2C136.5 223.9 120 250 120 280c0 44.2 35.8 80 80 80z" stroke="rgba(203,43,54,0.6)" stroke-width="3" fill="none"/>
+                <path d="M40 200c0-44.2 35.8-80 80-80 30 0 56.1 16.5 69.8 40.9L280 200l-90.2 39.1C176.1 263.5 150 280 120 280c-44.2 0-80-35.8-80-80z" stroke="rgba(203,43,54,0.4)" stroke-width="2" fill="none"/>
+                <path d="M360 200c0 44.2-35.8 80-80 80-30 0-56.1-16.5-69.8-40.9L120 200l90.2-39.1C223.9 136.5 250 120 280 120c44.2 0 80 35.8 80 80z" stroke="rgba(203,43,54,0.4)" stroke-width="2" fill="none"/>
+            </svg>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="dot"></span>
+                <span data-text="hero_badge">GMG Talent Show 2026</span>
+            </div>
+            <h1 data-text="hero_title">İstedadını<br><span class="accent">Göstər!</span></h1>
+            <p data-text="hero_subtitle">Komandamızda gizli qalan istedadları üzə çıxarmaq və bir-birimizi fərqli tərəfdən tanımaq üçün şirkətdaxili istedad müsabiqəsinə start veririk!</p>
+            <a href="#apply" class="hero-cta">
+                <span data-text="hero_cta">İştirak et</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </a>
+        </div>
+        <div class="hero-scroll">
+            <span data-text="hero_scroll">Aşağı</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Timeline -->
+    <div class="timeline-bar">
+        <div class="timeline-step active">
+            <div class="timeline-num">1</div>
+            <div class="timeline-title" data-text="timeline_1_title">Qeydiyyat</div>
+            <div class="timeline-date" data-text="timeline_1_date">20 fevral, 2026</div>
+            <div class="timeline-desc" data-text="timeline_1_desc">Ərizələrin qəbulu və videoların yüklənməsi</div>
+        </div>
+        <div class="timeline-step">
+            <div class="timeline-num">2</div>
+            <div class="timeline-title" data-text="timeline_2_title">Səsvermə</div>
+            <div class="timeline-date" data-text="timeline_2_date">Tezliklə</div>
+            <div class="timeline-desc" data-text="timeline_2_desc">Şirkətdaxili səsvermə və Münsiflər Heyətinin qiymətləndirməsi</div>
+        </div>
+        <div class="timeline-step">
+            <div class="timeline-num">3</div>
+            <div class="timeline-title" data-text="timeline_3_title">Final</div>
+            <div class="timeline-date" data-text="timeline_3_date">Tezliklə</div>
+            <div class="timeline-desc" data-text="timeline_3_desc">Münsiflər Heyətinin final səsverməsi, finalistlərin seçilməsi</div>
+        </div>
+        <div class="timeline-step">
+            <div class="timeline-num">4</div>
+            <div class="timeline-title" data-text="timeline_4_title">Mükafatlandırma</div>
+            <div class="timeline-date" data-text="timeline_4_date">Tezliklə</div>
+            <div class="timeline-desc" data-text="timeline_4_desc">Qalibin elan olunması. Mükafat fondu: 500 AZN</div>
+        </div>
+    </div>
+
+    <!-- Videos -->
+    <section class="videos-section" id="videos">
+        <div class="section-header">
+            <div class="section-tag" data-text="videos_tag">İştirakçıların videoları</div>
+            <h2 class="section-title" data-text="videos_title">İstedadları kəşf et</h2>
+            <p class="section-subtitle" data-text="videos_subtitle">Həmkarlarımızın istedadlarına bax, ilhamlan və bəyəndiyinə səs ver</p>
+        </div>
+
+
+        <div class="video-grid" id="videoGrid">
+            <!-- Cards will be injected by JS -->
+        </div>
+    </section>
+
+    <!-- Rules -->
+    <section class="rules-section" id="rules">
+        <div class="rules-container">
+            <div class="section-header">
+                <div class="section-tag" data-text="rules_tag">Necə iştirak etməli?</div>
+                <h2 class="section-title" data-text="rules_title">Müsabiqə qaydaları</h2>
+                <p class="section-subtitle" data-text="rules_subtitle">İştirak et. İlham ver. Təəccübləndir.</p>
+            </div>
+            <div id="rulesContent"><!-- Loaded from API --></div>
+        </div>
+    </section>
+
+    <!-- Apply -->
+    <section class="apply-section" id="apply">
+        <div class="apply-container">
+            <div class="section-header">
+                <div class="section-tag" data-text="apply_tag">Qeydiyyat</div>
+                <h2 class="section-title" data-text="apply_title">İştirak et</h2>
+                <p class="section-subtitle" data-text="apply_subtitle">İstedadını əks etdirən qısa video hazırla, formanı doldur və videonu yüklə. Son müraciət tarixi: <strong>20.02.2026</strong></p>
+            </div>
+            <div class="apply-form" id="applyForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label"><span data-text="apply_label_first_name">Ad</span> <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="formName" placeholder="Adınız" data-placeholder="apply_placeholder_first_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><span data-text="apply_label_last_name">Soyad</span> <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="formSurname" placeholder="Soyadınız" data-placeholder="apply_placeholder_last_name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><span data-text="apply_label_company">Şirkət / Departament</span> <span class="required">*</span></label>
+                    <select class="form-select" id="formCompany" required>
+                        <option value="" disabled selected data-text="apply_placeholder_company">Şirkətinizi seçin</option>
+                        <option value="Global Management">Global Management</option>
+                        <option value="Baku TV">Baku TV</option>
+                        <option value="Report İnformasiya Agentliyi">Report İnformasiya Agentliyi</option>
+                        <option value="Oxu.Az">Oxu.Az</option>
+                        <option value="Caliber">Caliber</option>
+                        <option value="Baku WS">Baku WS</option>
+                        <option value="Media.Az">Media.Az</option>
+                        <option value="Global Photo Stock">Global Photo Stock</option>
+                        <option value="Kaspi qəzeti redaksiyası">Kaspi qəzeti redaksiyası</option>
+                        <option value="Kaspiy-rus">Kaspiy-rus</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><span data-text="apply_label_department">Departament</span> <span class="required">*</span></label>
+                    <input type="text" class="form-input" id="formDept" placeholder="Məs: Marketing, IT, HR..." data-placeholder="apply_placeholder_department">
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><span data-text="apply_label_title">Çıxışın adı</span> <span class="required">*</span></label>
+                    <input type="text" class="form-input" id="formTitle" placeholder="Məs: Gitara ilə akustik ifa" data-placeholder="apply_placeholder_title" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" data-text="apply_label_description">Qısa təsvir</label>
+                    <textarea class="form-textarea" id="formDesc" placeholder="Çıxışınız haqqında bir neçə cümlə yazın..." data-placeholder="apply_placeholder_description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label"><span data-text="apply_label_video">Video fayl</span> <span class="required">*</span></label>
+                    <div class="file-upload" id="fileUploadArea">
+                        <input type="file" id="formFile" accept="video/mp4,.mp4" hidden>
+                        <div class="file-upload-content" id="fileUploadContent">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--gray-300)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            <span class="file-upload-text" data-text="apply_file_upload_text">Videonu buraya sürükləyin və ya <strong>seçin</strong></span>
+                            <span class="file-upload-hint" data-text="apply_file_upload_hint">Yalnız MP4 format — maks. 500MB, maks. 3 dəqiqə, minimum HD</span>
+                        </div>
+                        <div class="file-selected" id="fileSelected" style="display:none">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                            <span class="file-name" id="fileName"></span>
+                            <button type="button" class="file-remove" id="fileRemove">&times;</button>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="form-submit" onclick="submitApplication()" data-text="apply_submit_btn">Göndər</button>
+            </div>
+            <div class="form-success" id="formSuccess">
+                <div class="checkmark">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <h3 data-text="apply_success_title">Müraciətiniz qəbul olundu!</h3>
+                <p data-text="apply_success_message">Təşkilat komitəsi sizinlə əlaqə saxlayacaq</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="footer" id="about">
+        <div class="footer-logo">
+            <img src="assets/logo-white.svg" alt="GMG">
+        </div>
+        <p data-text="footer_tagline">İstedadını Göstər! &mdash; Global Media Group şirkətdaxili istedad müsabiqəsi</p>
+        <p style="margin-top:8px;" data-text="footer_copyright">&copy; 2026 Global Media Group. Bütün hüquqlar qorunur.</p>
+        <ul class="footer-links">
+            <li><a href="#" data-text="footer_link">gmg.gasimov.az</a></li>
+        </ul>
+    </section>
+
+    <!-- Video Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+        <div class="modal">
+            <div class="modal-video" id="modalVideo">
+                <div class="modal-video-placeholder">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    <span style="font-size:14px" data-text="modal_video_loading">Video yüklənəcək...</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-header">
+                    <div>
+                        <h2 class="modal-title" id="modalTitle">Video basligi</h2>
+                        <div class="modal-meta">
+                            <div class="modal-meta-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                <span id="modalAuthor">Ad Soyad</span>
+                            </div>
+                            <div class="modal-meta-item">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                                <span id="modalDept">Departament</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-votes-row">
+                        <div class="modal-like-area" id="modalLikeArea">
+                            <button class="modal-like-btn" id="modalLikeBtn" onclick="handleLike()">
+                                <svg class="heart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                                <span data-text="modal_like_btn">Bəyən</span>
+                            </button>
+                            <span class="modal-vote-count"><strong id="modalVoteCount">0</strong> <span data-text="modal_votes_suffix">səs</span></span>
+                        </div>
+                        <div class="modal-jury-area" id="modalJuryArea" style="display:none">
+                            <button class="modal-jury-btn" id="modalJuryBtn" onclick="openJuryRating(currentVideoId)">
+                                <svg class="jury-star-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/></svg>
+                                <span data-text="modal_jury_btn">Qiymətləndir</span>
+                            </button>
+                            <span class="modal-vote-count"><strong id="modalJuryCount">8.5</strong> <span data-text="modal_jury_score_suffix">bal</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rating-section" id="ratingSection" style="display:none">
+                    <div class="email-gate" id="emailGate">
+                        <p data-text="modal_email_gate_text">Səsinizi qeyd etmək üçün e-poçt ünvanınızı daxil edin</p>
+                        <form class="email-form" id="emailForm" onsubmit="submitVote(event)">
+                            <input type="email" class="email-input" id="emailInput" placeholder="ad@global-media.az" data-placeholder="modal_email_placeholder" required>
+                            <button type="submit" class="email-submit" data-text="modal_email_submit">Səs ver</button>
+                        </form>
+                    </div>
+                    <div class="vote-already" id="voteAlready" style="display:none">
+                        <div style="width:48px;height:48px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </div>
+                        <h3 style="margin:0 0 4px;color:var(--navy)" data-text="modal_already_voted_title">Artıq səs vermişsiniz</h3>
+                        <p style="margin:0;color:var(--gray-400);font-size:14px" data-text="modal_already_voted_message">Bu e-poçt ilə bu videoya artıq səs vermişsiniz</p>
+                    </div>
+                    <div class="vote-denied" id="voteDenied" style="display:none">
+                        <div style="width:48px;height:48px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+                        </div>
+                        <h3 style="margin:0 0 4px;color:var(--navy)" data-text="modal_vote_denied_title">İcazə verilmir</h3>
+                        <p style="margin:0;color:var(--gray-400);font-size:14px" data-text="modal_vote_denied_message">Bu e-poçt domeni ilə səs vermək mümkün deyil</p>
+                    </div>
+                    <div class="vote-success" id="voteSuccess">
+                        <div class="checkmark">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <h3 data-text="modal_vote_success_title">Təşəkkürlər!</h3>
+                        <p data-text="modal_vote_success_message">Səsiniz uğurla qeydə alındı</p>
+                    </div>
+                </div>
+
+                <p class="modal-description" id="modalDesc">Video haqqinda melumat</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jury Login Modal -->
+    <div class="jury-login-overlay" id="juryLoginOverlay">
+        <button class="jury-login-close" onclick="closeJuryLogin()">&times;</button>
+        <div class="jury-login-box">
+            <div class="jury-login-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/></svg>
+            </div>
+            <h2 data-text="jury_login_title">Münsiflər Heyəti</h2>
+            <p data-text="jury_login_desc">Qiymətləndirmə panelinə daxil olmaq üçün məlumatlarınızı daxil edin</p>
+            <input type="email" class="jury-login-input" id="juryEmailInput" placeholder="E-poçt ünvanı" data-placeholder="jury_login_email_placeholder">
+            <input type="password" class="jury-login-input" id="juryPasswordInput" placeholder="Şifrə" data-placeholder="jury_login_password_placeholder" onkeydown="if(event.key==='Enter')juryLogin()">
+            <button class="jury-login-submit" onclick="juryLogin()" data-text="jury_login_submit">Daxil ol</button>
+            <div class="jury-login-error" id="juryLoginError" data-text="jury_login_error">E-poçt və ya şifrə yanlışdır. Yenidən cəhd edin.</div>
+        </div>
+    </div>
+
+    <!-- Jury Dashboard (hidden by default, replaces main content when active) -->
+    <div class="jury-dashboard" id="juryDashboard">
+        <div class="jury-header">
+            <div class="jury-header-left">
+                <img src="assets/logo-white.svg" alt="GMG">
+                <span class="jury-header-title" data-text="jury_dashboard_title">Münsiflər Heyəti Paneli</span>
+                <span class="jury-header-badge" id="juryHeaderBadge">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/></svg>
+                    <span id="juryBadgeName" data-text="jury_badge_label">Münsif</span>
+                </span>
+            </div>
+            <button class="jury-logout-btn" onclick="juryLogout()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:4px"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                <span data-text="jury_logout_btn">Çıxış</span>
+            </button>
+        </div>
+        <div class="jury-content">
+            <div class="jury-stats">
+                <div class="jury-stat-card">
+                    <div class="jury-stat-label" data-text="jury_stat_total">Ümumi iştirakçı</div>
+                    <div class="jury-stat-value" id="juryTotalCount">9</div>
+                </div>
+                <div class="jury-stat-card">
+                    <div class="jury-stat-label" data-text="jury_stat_rated">Qiymətləndirildi</div>
+                    <div class="jury-stat-value"><span id="juryRatedCount">0</span> <span class="of-total">/ 9</span></div>
+                </div>
+                <div class="jury-stat-card">
+                    <div class="jury-stat-label" data-text="jury_stat_avg">Orta bal</div>
+                    <div class="jury-stat-value" id="juryAvgScore">-</div>
+                </div>
+            </div>
+            <div class="jury-grid" id="juryGrid">
+                <!-- Jury cards injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Jury Rating Modal -->
+    <div class="jury-rating-overlay" id="juryRatingOverlay">
+        <div class="jury-rating-modal">
+            <div class="jury-rating-body" style="position:relative">
+                <button class="jury-rating-close" onclick="closeJuryRating()" style="position:absolute;top:12px;right:12px;z-index:1">&times;</button>
+                <div class="jury-rating-info">
+                    <div class="card-avatar" id="juryRatingAvatar" style="width:42px;height:42px;font-size:16px">--</div>
+                    <div class="jury-rating-info-text">
+                        <h3 id="juryRatingTitle">Video başlığı</h3>
+                        <span id="juryRatingMeta">Ad Soyad &bull; Departament</span>
+                    </div>
+                </div>
+
+                <div id="juryRatingForm">
+                    <div class="jury-criteria-list" id="juryCriteriaList">
+                        <!-- Criteria items injected by JS -->
+                    </div>
+
+                    <div class="jury-average-bar">
+                        <span class="jury-average-label" data-text="jury_rating_avg_label">Orta bal</span>
+                        <span class="jury-average-score" id="juryAverage">0.0</span>
+                    </div>
+
+                    <button class="jury-submit-btn" onclick="submitJuryScore()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        <span data-text="jury_rating_submit">Qiymətləndir</span>
+                    </button>
+                </div>
+
+                <div class="jury-rating-success" id="juryRatingSuccess">
+                    <div class="checkmark">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <h3 data-text="jury_rating_success_title">Qiymət uğurla qeydə alındı!</h3>
+                    <p data-text="jury_rating_success_message">Bu iştirakçı üçün balınız saxlanıldı</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+// ===== LOAD SITE TEXTS =====
+let _siteTexts = {};
+(async function loadTexts() {
+    try {
+        const res = await fetch('/api/texts');
+        if (!res.ok) return;
+        const t = await res.json();
+        _siteTexts = t;
+        document.querySelectorAll('[data-text]').forEach(el => {
+            const key = el.getAttribute('data-text');
+            if (t[key] !== undefined) el.innerHTML = t[key];
+        });
+        document.querySelectorAll('[data-placeholder]').forEach(el => {
+            const key = el.getAttribute('data-placeholder');
+            if (t[key] !== undefined) el.placeholder = t[key];
+        });
+        // Re-apply jury nav button if jury is logged in (texts overwrite it)
+        if (typeof isJuryLoggedIn !== 'undefined' && isJuryLoggedIn && currentJuryMember) {
+            document.getElementById('juryNavBtnText').textContent = currentJuryMember.name + ' (' + (t.jury_badge_label || 'Münsif') + ')';
+        }
+    } catch(e) { console.error('Texts load error:', e); }
+})();
+
+// ===== MOBILE MENU =====
+function toggleMobileMenu() {
+    const burger = document.getElementById('burger');
+    const menu = document.getElementById('mobileMenu');
+    const navbar = document.getElementById('navbar');
+    const isOpen = menu.classList.toggle('active');
+    burger.classList.toggle('open', isOpen);
+    navbar.classList.toggle('menu-open', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+    // Force white logo when menu open
+    const white = navbar.querySelector('.logo-white');
+    const dark = navbar.querySelector('.logo-dark');
+    if (isOpen) {
+        white.style.display = 'block';
+        dark.style.display = 'none';
+    } else {
+        // Restore based on scroll
+        const scrolled = window.scrollY > 80;
+        white.style.display = scrolled ? 'none' : 'block';
+        dark.style.display = scrolled ? 'block' : 'none';
+    }
+}
+function closeMobileMenu() {
+    const burger = document.getElementById('burger');
+    const menu = document.getElementById('mobileMenu');
+    const navbar = document.getElementById('navbar');
+    burger.classList.remove('open');
+    menu.classList.remove('active');
+    navbar.classList.remove('menu-open');
+    document.body.style.overflow = '';
+    const white = navbar.querySelector('.logo-white');
+    const dark = navbar.querySelector('.logo-dark');
+    const scrolled = window.scrollY > 80;
+    white.style.display = scrolled ? 'none' : 'block';
+    dark.style.display = scrolled ? 'block' : 'none';
+}
+
+// ===== DATA =====
+let videos = [];
+
+(async function loadVideos() {
+    try {
+        const res = await fetch('/api/videos');
+        if (res.ok) videos = await res.json();
+    } catch (e) {
+        console.error('Video yukleme xetasi:', e);
+    }
+    renderCards();
+})();
+
+// ===== LOAD RULES =====
+(async function loadRules() {
+    try {
+        const res = await fetch('/api/rules');
+        if (!res.ok) return;
+        const groups = await res.json();
+        const container = document.getElementById('rulesContent');
+        container.innerHTML = groups.map(g => `
+            <h3 style="font-size:18px;font-weight:700;color:var(--navy);margin-bottom:16px">${g.title}</h3>
+            <div class="rules-grid" style="margin-bottom:40px">
+                ${g.rules.map(r => `
+                    <div class="rule-card">
+                        <div class="rule-number">${r.icon || ''}</div>
+                        <div class="rule-content">
+                            <h3>${r.title}</h3>
+                            <p>${r.description}</p>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `).join('');
+    } catch (e) {
+        console.error('Rules load error:', e);
+    }
+})();
+
+// ===== PARTICLES =====
+(function createParticles() {
+    const container = document.getElementById('particles');
+    for (let i = 0; i < 30; i++) {
+        const p = document.createElement('div');
+        p.classList.add('particle');
+        const size = Math.random() * 6 + 2;
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.animationDuration = (Math.random() * 15 + 10) + 's';
+        p.style.animationDelay = (Math.random() * 10) + 's';
+        container.appendChild(p);
+    }
+})();
+
+// ===== RENDER CARDS =====
+function renderCards() {
+    const grid = document.getElementById('videoGrid');
+    const filtered = videos;
+    grid.innerHTML = filtered.map(v => `
+        <div class="video-card" data-id="${v.id}" onclick="openModal(${v.id})">
+            <div class="card-thumbnail">
+                ${v.thumb
+                    ? `<img src="${v.thumb}" alt="">`
+                    : `<div style="width:100%;height:100%;background:linear-gradient(135deg, var(--navy) 0%, #1a3a5c 100%);display:flex;align-items:center;justify-content:center;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                    </div>`
+                }
+                <div class="play-overlay">
+                    <div class="play-btn">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="var(--navy)"><polygon points="8,5 20,12 8,19"/></svg>
+                    </div>
+                </div>
+                <span class="card-duration">${v.duration||''}</span>
+            </div>
+            <div class="card-body">
+                <div class="card-author">
+                    <div class="card-avatar">${v.initials}</div>
+                    <div class="card-author-info">
+                        <div class="card-author-name">${v.author}</div>
+                        <div class="card-author-dept">${v.dept||''}</div>
+                    </div>
+                </div>
+                <div class="card-title">${v.title}</div>
+                <div class="card-desc">${(v.desc||'').slice(0, 80)}${v.desc && v.desc.length > 80 ? '...' : ''}</div>
+                <div class="card-footer">
+                    <div class="card-like-area">
+                        <button class="card-like-btn" onclick="event.stopPropagation(); openModal(${v.id})">
+                            <svg class="heart-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                            ${_siteTexts.modal_like_btn || 'Bəyən'}
+                        </button>
+                        <span class="card-like-count">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                            ${v.votes} ${_siteTexts.modal_votes_suffix || 'səs'}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+
+    // Animate cards in
+    requestAnimationFrame(() => {
+        document.querySelectorAll('.video-card').forEach((card, i) => {
+            setTimeout(() => card.classList.add('visible'), i * 80);
+        });
+    });
+}
+
+
+// ===== NAVBAR SCROLL =====
+let lastScroll = 0;
+window.addEventListener('scroll', () => {
+    const navbar = document.getElementById('navbar');
+    const scrollY = window.scrollY;
+    navbar.classList.toggle('scrolled', scrollY > 80);
+    // Toggle logos
+    const white = navbar.querySelector('.logo-white');
+    const dark = navbar.querySelector('.logo-dark');
+    if (scrollY > 80) {
+        white.style.display = 'none';
+        dark.style.display = 'block';
+    } else {
+        white.style.display = 'block';
+        dark.style.display = 'none';
+    }
+    lastScroll = scrollY;
+});
+
+
+// ===== SCROLL REVEAL =====
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+document.querySelectorAll('.video-card').forEach(card => revealObserver.observe(card));
+
+// ===== MODAL =====
+let currentVideoId = null;
+
+function openModal(id) {
+    currentVideoId = id;
+    const v = videos.find(x => x.id === id);
+    document.getElementById('modalTitle').textContent = v.title;
+    document.getElementById('modalAuthor').textContent = v.author;
+    document.getElementById('modalDept').textContent = v.dept || '';
+    document.getElementById('modalDesc').textContent = v.desc || '';
+    document.getElementById('modalVoteCount').textContent = v.votes;
+    // Video player
+    const videoContainer = document.getElementById('modalVideo');
+    if (v.video_url) {
+        videoContainer.innerHTML = `<video controls preload="metadata" style="width:100%;height:100%;object-fit:contain;background:#000;border-radius:12px 12px 0 0"><source src="${v.video_url}" type="video/mp4"></video>`;
+    } else {
+        videoContainer.innerHTML = `<div class="modal-video-placeholder"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg><span style="font-size:14px">${_siteTexts.modal_video_loading || 'Video yüklənəcək...'}</span></div>`;
+    }
+    // Reset state
+    const likeBtn = document.getElementById('modalLikeBtn');
+    likeBtn.classList.remove('liked');
+    likeBtn.innerHTML = '<svg class="heart-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> ' + (_siteTexts.modal_like_btn || 'Bəyən');
+    document.getElementById('ratingSection').style.display = 'none';
+    document.getElementById('emailGate').classList.remove('show');
+    document.getElementById('voteSuccess').classList.remove('show');
+    document.getElementById('voteAlready').style.display = 'none';
+    document.getElementById('voteDenied').style.display = 'none';
+    document.getElementById('modalLikeArea').style.display = '';
+    document.getElementById('modalJuryArea').style.display = isJuryLoggedIn ? '' : 'none';
+    // Show jury score for this video
+    const myScore = juryScores[id];
+    document.getElementById('modalJuryCount').textContent = myScore ? myScore.average.toFixed(1) : '-';
+    document.getElementById('modalOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+    const vid = document.querySelector('#modalVideo video');
+    if (vid) { vid.pause(); vid.src = ''; }
+    document.getElementById('modalOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+document.getElementById('modalOverlay').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        if (document.getElementById('juryRatingOverlay').classList.contains('active')) { closeJuryRating(); return; }
+        if (document.getElementById('juryLoginOverlay').classList.contains('active')) { closeJuryLogin(); return; }
+        closeModal();
+    }
+});
+
+// ===== LIKE BUTTON =====
+function handleLike() {
+    // Show email form section
+    const section = document.getElementById('ratingSection');
+    section.style.display = '';
+    document.getElementById('emailGate').classList.add('show');
+    section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ===== VOTE SUBMIT =====
+async function submitVote(e) {
+    e.preventDefault();
+    const email = document.getElementById('emailInput').value;
+    if (!email) return;
+
+    const submitBtn = document.querySelector('#emailForm .email-submit');
+    submitBtn.disabled = true;
+    submitBtn.textContent = _siteTexts.modal_sending || 'Göndərilir...';
+
+    try {
+        const res = await fetch('/api/votes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ video_id: currentVideoId, email }),
+        });
+        const data = await res.json();
+
+        if (res.status === 409) {
+            document.getElementById('emailGate').classList.remove('show');
+            document.getElementById('voteAlready').style.display = 'block';
+            document.getElementById('voteDenied').style.display = 'none';
+            submitBtn.disabled = false;
+            submitBtn.textContent = _siteTexts.modal_email_submit || 'Səs ver';
+            return;
+        }
+        if (res.status === 403) {
+            document.getElementById('emailGate').classList.remove('show');
+            document.getElementById('voteDenied').style.display = 'block';
+            document.getElementById('voteAlready').style.display = 'none';
+            submitBtn.disabled = false;
+            submitBtn.textContent = _siteTexts.modal_email_submit || 'Səs ver';
+            return;
+        }
+        if (!res.ok) throw new Error(data.message || (_siteTexts.error_generic || 'Xəta baş verdi'));
+
+        // Animate like button
+        const likeBtn = document.getElementById('modalLikeBtn');
+        likeBtn.classList.add('liked');
+        likeBtn.innerHTML = '<svg class="heart-icon" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> ' + (_siteTexts.modal_like_btn_liked || 'Bəyənildi');
+        // Update data
+        const v = videos.find(x => x.id === currentVideoId);
+        if (v) {
+            v.votes = data.votes;
+            document.getElementById('modalVoteCount').textContent = v.votes;
+        }
+        // Hide email gate, show success
+        document.getElementById('emailGate').classList.remove('show');
+        setTimeout(() => {
+            document.getElementById('voteSuccess').classList.add('show');
+            renderCards();
+        }, 400);
+        document.getElementById('emailInput').value = '';
+    } catch (err) {
+        alert((_siteTexts.error_prefix || 'Xəta: ') + err.message);
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = _siteTexts.modal_email_submit || 'Səs ver';
+    }
+}
+
+// ===== FILE UPLOAD =====
+const fileInput = document.getElementById('formFile');
+const uploadArea = document.getElementById('fileUploadArea');
+const uploadContent = document.getElementById('fileUploadContent');
+const fileSelected = document.getElementById('fileSelected');
+const fileNameEl = document.getElementById('fileName');
+const fileRemove = document.getElementById('fileRemove');
+
+uploadArea.addEventListener('click', () => { if (fileSelected.style.display === 'none') fileInput.click(); });
+uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+uploadArea.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
+});
+fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
+fileRemove.addEventListener('click', (e) => {
+    e.stopPropagation();
+    fileInput.value = '';
+    fileSelected.style.display = 'none';
+    uploadContent.style.display = '';
+    uploadArea.style.borderColor = '';
+});
+
+let videoDuration = '';
+function handleFile(file) {
+    if (!file.name.toLowerCase().endsWith('.mp4')) {
+        alert(_siteTexts.error_invalid_format || 'Yalnız MP4 formatında video yükləyə bilərsiniz');
+        return;
+    }
+    fileNameEl.textContent = file.name + ' (' + (file.size / (1024*1024)).toFixed(1) + ' MB)';
+    uploadContent.style.display = 'none';
+    fileSelected.style.display = '';
+    uploadArea.style.borderColor = 'var(--gray-200)';
+    // Extract duration
+    videoDuration = '';
+    const url = URL.createObjectURL(file);
+    const vid = document.createElement('video');
+    vid.preload = 'metadata';
+    vid.onloadedmetadata = function() {
+        const s = Math.round(vid.duration);
+        videoDuration = Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+        URL.revokeObjectURL(url);
+    };
+    vid.src = url;
+}
+
+// ===== APPLICATION FORM =====
+async function submitApplication() {
+    const requiredFields = ['formName','formSurname','formCompany','formDept','formTitle'];
+
+    let valid = true;
+    requiredFields.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el.value || el.value.trim() === '') {
+            valid = false;
+            el.style.borderColor = 'var(--red)';
+            const evt = id === 'formCompany' || id === 'formTalent' ? 'change' : 'input';
+            el.addEventListener(evt, function handler() {
+                el.style.borderColor = '';
+                el.removeEventListener(evt, handler);
+            }, { once: true });
+        }
+    });
+    // File required
+    if (!document.getElementById('formFile').files.length) {
+        valid = false;
+        document.getElementById('fileUploadArea').style.borderColor = 'var(--red)';
+    }
+    if (!valid) return;
+
+    const submitBtn = document.querySelector('#applyForm .form-submit');
+    const origText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = _siteTexts.modal_sending || 'Göndərilir...';
+
+    try {
+        const recaptchaToken = await grecaptcha.execute('6LfApm8sAAAAAK_4bvex-AebqGNnH9S7HF6Up9zA', { action: 'submit_application' });
+
+        const formData = new FormData();
+        formData.append('first_name', document.getElementById('formName').value.trim());
+        formData.append('last_name', document.getElementById('formSurname').value.trim());
+        formData.append('company_name', document.getElementById('formCompany').value);
+        formData.append('department', document.getElementById('formDept').value.trim());
+        formData.append('title', document.getElementById('formTitle').value.trim());
+        formData.append('description', document.getElementById('formDesc').value.trim());
+        formData.append('video', document.getElementById('formFile').files[0]);
+        if (videoDuration) formData.append('duration', videoDuration);
+        formData.append('recaptcha_token', recaptchaToken);
+
+        const res = await fetch('/api/videos', {
+            method: 'POST',
+            body: formData,
+        });
+        if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.message || (_siteTexts.error_generic || 'Xəta baş verdi'));
+        }
+        document.getElementById('applyForm').style.display = 'none';
+        document.getElementById('formSuccess').classList.add('show');
+    } catch (e) {
+        alert((_siteTexts.error_submission || 'Göndərmə xətası: ') + e.message);
+        submitBtn.disabled = false;
+        submitBtn.textContent = origText;
+    }
+}
+
+// ===== JURY PANEL =====
+let isJuryLoggedIn = false;
+let currentJuryMember = null;
+
+// Restore jury session
+(function restoreJurySession() {
+    try {
+        const saved = localStorage.getItem('gmg_jury');
+        if (saved) {
+            currentJuryMember = JSON.parse(saved);
+            isJuryLoggedIn = true;
+            // Defer UI update until DOM is ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', onJuryAuth);
+            } else {
+                onJuryAuth();
+            }
+        }
+    } catch(e) {}
+})();
+
+const juryCriteria = [
+    { id: 'skill', label: _siteTexts.jury_criteria_skill || 'İstedad və bacarıq səviyyəsi' },
+    { id: 'originality', label: _siteTexts.jury_criteria_originality || 'Orijinallıq və yaradıcı yanaşma' },
+    { id: 'presentation', label: _siteTexts.jury_criteria_presentation || 'Təqdimat bacarığı' },
+    { id: 'uniqueness', label: _siteTexts.jury_criteria_uniqueness || 'İdeyanın unikallığı' },
+    { id: 'impact', label: _siteTexts.jury_criteria_impact || 'Ümumi performans və təsir gücü' },
+];
+let juryScores = {};
+let currentJuryVideoId = null;
+
+// Load saved jury scores from localStorage
+(function loadJuryScores() {
+    try {
+        const saved = localStorage.getItem('gmg_jury_scores');
+        if (saved) juryScores = JSON.parse(saved);
+    } catch(e) {}
+})();
+
+function saveJuryScores() {
+    try { localStorage.setItem('gmg_jury_scores', JSON.stringify(juryScores)); } catch(e) {}
+}
+
+// --- Jury Login ---
+function openJuryLogin() {
+    document.getElementById('juryLoginOverlay').classList.add('active');
+    document.getElementById('juryEmailInput').value = '';
+    document.getElementById('juryPasswordInput').value = '';
+    document.getElementById('juryLoginError').classList.remove('show');
+    document.getElementById('juryEmailInput').focus();
+    document.body.style.overflow = 'hidden';
+}
+
+function closeJuryLogin() {
+    document.getElementById('juryLoginOverlay').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+document.getElementById('juryLoginOverlay').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('juryLoginOverlay')) closeJuryLogin();
+});
+
+async function juryLogin() {
+    const emailInput = document.getElementById('juryEmailInput');
+    const passInput = document.getElementById('juryPasswordInput');
+    if (!emailInput.value || !passInput.value) {
+        if (!emailInput.value) emailInput.classList.add('error');
+        if (!passInput.value) passInput.classList.add('error');
+        setTimeout(() => { emailInput.classList.remove('error'); passInput.classList.remove('error'); }, 400);
+        return;
+    }
+
+    const loginBtn = document.querySelector('.jury-login-submit');
+    loginBtn.disabled = true;
+    loginBtn.textContent = _siteTexts.jury_login_loading || 'Yüklənir...';
+
+    try {
+        const res = await fetch('/api/jury/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ email: emailInput.value, password: passInput.value }),
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+            passInput.classList.add('error');
+            document.getElementById('juryLoginError').classList.add('show');
+            setTimeout(() => { passInput.classList.remove('error'); }, 400);
+            passInput.value = '';
+            passInput.focus();
+            return;
+        }
+
+        isJuryLoggedIn = true;
+        currentJuryMember = data;
+        juryScores = data.scores || {};
+        localStorage.setItem('gmg_jury', JSON.stringify(data));
+        localStorage.setItem('gmg_jury_scores', JSON.stringify(juryScores));
+        closeJuryLogin();
+        onJuryAuth();
+    } catch (e) {
+        document.getElementById('juryLoginError').classList.add('show');
+    } finally {
+        loginBtn.disabled = false;
+        loginBtn.textContent = _siteTexts.jury_login_submit || 'Daxil ol';
+    }
+}
+
+// --- Jury Auth ---
+function onJuryAuth() {
+    // Update navbar button to show jury name
+    const navBtn = document.getElementById('juryNavBtn');
+    document.getElementById('juryNavBtnText').textContent = currentJuryMember.name + ' (' + (_siteTexts.jury_badge_label || 'Münsif') + ')';
+    navBtn.onclick = juryLogout;
+}
+
+function juryLogout() {
+    isJuryLoggedIn = false;
+    currentJuryMember = null;
+    localStorage.removeItem('gmg_jury');
+    // Reset navbar button
+    document.getElementById('juryNavBtnText').textContent = _siteTexts.nav_jury_btn || 'Münsiflər Heyəti';
+    document.getElementById('juryNavBtn').onclick = openJuryLogin;
+}
+
+function renderJuryGrid() {
+    const grid = document.getElementById('juryGrid');
+    grid.innerHTML = videos.map(v => {
+        const isRated = juryScores[v.id] !== undefined;
+        const score = isRated ? juryScores[v.id].average : null;
+        return `
+        <div class="jury-card ${isRated ? 'is-rated' : ''}" data-id="${v.id}">
+            <div class="jury-card-thumb">
+                ${v.thumb
+                    ? `<img src="${v.thumb}" alt="">`
+                    : `<div style="width:100%;height:100%;background:linear-gradient(135deg, var(--navy) 0%, #1a3a5c 100%);display:flex;align-items:center;justify-content:center;">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+                    </div>`
+                }
+                <div class="jury-rated-badge">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                    ${_siteTexts.jury_rated_badge || 'Qiymətləndirildi'}
+                </div>
+            </div>
+            <div class="jury-card-body">
+                <div class="jury-card-author">
+                    <div class="card-avatar">${v.initials}</div>
+                    <div class="card-author-info">
+                        <div class="card-author-name">${v.author}</div>
+                        <div class="card-author-dept">${v.dept||''}</div>
+                    </div>
+                </div>
+                <div class="jury-card-title">${v.title}</div>
+                <div class="jury-card-score">${_siteTexts.jury_score_label || 'Bal:'} <strong>${score !== null ? score.toFixed(1) : '-'}</strong> / 10</div>
+                <button class="jury-rate-btn ${isRated ? 'rated' : ''}" onclick="openJuryRating(${v.id})">
+                    ${isRated ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> ' + (_siteTexts.jury_rated_badge || 'Qiymətləndirildi') : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/></svg> ' + (_siteTexts.jury_rate_btn || 'Qiymətləndir')}
+                </button>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function updateJuryStats() {
+    const ratedCount = Object.keys(juryScores).length;
+    document.getElementById('juryRatedCount').textContent = ratedCount;
+    if (ratedCount > 0) {
+        const totalAvg = Object.values(juryScores).reduce((sum, s) => sum + s.average, 0) / ratedCount;
+        document.getElementById('juryAvgScore').textContent = totalAvg.toFixed(1);
+    } else {
+        document.getElementById('juryAvgScore').textContent = '-';
+    }
+}
+
+// --- Jury Rating Modal ---
+function openJuryRating(id) {
+    currentJuryVideoId = id;
+    const v = videos.find(x => x.id === id);
+    document.getElementById('juryRatingAvatar').textContent = v.initials;
+    document.getElementById('juryRatingTitle').textContent = v.title;
+    document.getElementById('juryRatingMeta').textContent = v.author + (v.dept ? ' \u2022 ' + v.dept : '');
+
+    // Reset form
+    document.getElementById('juryRatingForm').style.display = '';
+    document.getElementById('juryRatingSuccess').classList.remove('show');
+
+    // Build criteria sliders
+    const list = document.getElementById('juryCriteriaList');
+    const existing = juryScores[id];
+    list.innerHTML = juryCriteria.map((c, i) => {
+        const val = existing ? existing.scores[c.id] : 5;
+        return `
+        <div class="jury-criteria-item">
+            <div class="jury-criteria-header">
+                <span class="jury-criteria-label">
+                    <span class="jury-criteria-num">${i + 1}</span>
+                    ${c.label}
+                </span>
+                <span class="jury-criteria-value" id="criteriaVal_${c.id}">${val}</span>
+            </div>
+            <input type="range" class="jury-slider" id="criteria_${c.id}" min="1" max="10" value="${val}" oninput="updateCriteriaValue('${c.id}', this.value)">
+        </div>`;
+    }).join('');
+
+    updateJuryAverage();
+
+    document.getElementById('juryRatingOverlay').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeJuryRating() {
+    document.getElementById('juryRatingOverlay').classList.remove('active');
+    // Restore scroll if modal behind is not open
+    const modalOpen = document.getElementById('modalOverlay').classList.contains('active');
+    document.body.style.overflow = modalOpen ? 'hidden' : '';
+}
+
+document.getElementById('juryRatingOverlay').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('juryRatingOverlay')) closeJuryRating();
+});
+
+function updateCriteriaValue(criteriaId, value) {
+    document.getElementById('criteriaVal_' + criteriaId).textContent = value;
+    updateJuryAverage();
+}
+
+function updateJuryAverage() {
+    let total = 0;
+    juryCriteria.forEach(c => {
+        const slider = document.getElementById('criteria_' + c.id);
+        if (slider) total += parseInt(slider.value);
+    });
+    const avg = total / juryCriteria.length;
+    document.getElementById('juryAverage').textContent = avg.toFixed(1);
+}
+
+async function submitJuryScore() {
+    const id = currentJuryVideoId;
+    const scores = {};
+    let total = 0;
+    juryCriteria.forEach(c => {
+        const val = parseInt(document.getElementById('criteria_' + c.id).value);
+        scores[c.id] = val;
+        total += val;
+    });
+
+    const submitBtn = document.querySelector('.jury-submit-btn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = _siteTexts.modal_sending || 'Göndərilir...';
+
+    try {
+        const res = await fetch('/api/jury/scores', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+                jury_member_id: currentJuryMember.id,
+                video_id: id,
+                ...scores,
+            }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || (_siteTexts.error_generic || 'Xəta baş verdi'));
+
+        const average = data.average;
+        juryScores[id] = { scores, average };
+        saveJuryScores();
+
+        // Show success
+        document.getElementById('juryRatingForm').style.display = 'none';
+        document.getElementById('juryRatingSuccess').classList.add('show');
+
+        // Auto close after delay
+        setTimeout(() => {
+            closeJuryRating();
+        }, 1500);
+    } catch (e) {
+        alert((_siteTexts.error_prefix || 'Xəta: ') + e.message);
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ' + (_siteTexts.jury_rating_submit || 'Qiymətləndir');
+    }
+}
+</script>
+</body>
+</html>

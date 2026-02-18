@@ -1,0 +1,40 @@
+# Dependencies
+admin/vendor/
+admin/node_modules/
+
+# Environment
+admin/.env
+
+# Laravel storage & cache
+admin/storage/app/public/
+admin/storage/framework/cache/data/
+admin/storage/framework/sessions/
+admin/storage/framework/views/
+admin/storage/logs/
+admin/bootstrap/cache/
+
+# SQLite database
+admin/database/database.sqlite
+
+# Compiled assets
+admin/public/build/
+admin/public/hot
+admin/public/storage
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Archives & temp files
+*.zip
+
+# WhatsApp images & brand assets (large files)
+WhatsApp Image*
+GMG_Brandbook*
+GMG Logo*
