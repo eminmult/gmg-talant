@@ -48,6 +48,14 @@ class VoteResource extends Resource
                     ->label('Video')
                     ->relationship('video', 'title'),
             ])
+            ->actions([
+                Tables\Actions\DeleteAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ])
             ->defaultSort('created_at', 'desc');
     }
 
