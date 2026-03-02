@@ -2412,6 +2412,13 @@
                         <h3 style="margin:0 0 4px;color:var(--navy)" data-text="modal_vote_denied_title">İcazə verilmir</h3>
                         <p style="margin:0;color:var(--gray-400);font-size:14px" data-text="modal_vote_denied_message">Bu e-poçt domeni ilə səs vermək mümkün deyil</p>
                     </div>
+                    <div class="vote-already" id="voteLimit" style="display:none">
+                        <div style="width:48px;height:48px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </div>
+                        <h3 style="margin:0 0 4px;color:var(--navy)">Səs limiti</h3>
+                        <p style="margin:0;color:var(--gray-400);font-size:14px">Hər e-poçt yalnız 3 videoya səs verə bilər</p>
+                    </div>
                     <div class="vote-success" id="voteSuccess">
                         <div class="checkmark">
                             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -2845,6 +2852,7 @@ function openModal(id) {
     document.getElementById('voteSuccess').classList.remove('show');
     document.getElementById('voteAlready').style.display = 'none';
     document.getElementById('voteDenied').style.display = 'none';
+    document.getElementById('voteLimit').style.display = 'none';
     document.getElementById('modalLikeArea').style.display = '';
     document.getElementById('modalJuryArea').style.display = isJuryLoggedIn ? '' : 'none';
     // Show jury score for this video
@@ -2903,6 +2911,7 @@ async function submitVote(e) {
             document.getElementById('emailGate').classList.remove('show');
             document.getElementById('voteAlready').style.display = 'block';
             document.getElementById('voteDenied').style.display = 'none';
+            document.getElementById('voteLimit').style.display = 'none';
             submitBtn.disabled = false;
             submitBtn.textContent = _siteTexts.modal_email_submit || 'Səs ver';
             return;
@@ -2911,6 +2920,16 @@ async function submitVote(e) {
             document.getElementById('emailGate').classList.remove('show');
             document.getElementById('voteDenied').style.display = 'block';
             document.getElementById('voteAlready').style.display = 'none';
+            document.getElementById('voteLimit').style.display = 'none';
+            submitBtn.disabled = false;
+            submitBtn.textContent = _siteTexts.modal_email_submit || 'Səs ver';
+            return;
+        }
+        if (res.status === 429) {
+            document.getElementById('emailGate').classList.remove('show');
+            document.getElementById('voteLimit').style.display = 'block';
+            document.getElementById('voteAlready').style.display = 'none';
+            document.getElementById('voteDenied').style.display = 'none';
             submitBtn.disabled = false;
             submitBtn.textContent = _siteTexts.modal_email_submit || 'Səs ver';
             return;

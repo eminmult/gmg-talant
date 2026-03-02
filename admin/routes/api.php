@@ -114,6 +114,12 @@ Route::post('/votes', function (Request $request) {
         return response()->json(['message' => 'Bu e-poçt domeni ilə səs vermək mümkün deyil'], 403);
     }
 
+    // Limit: max 3 votes per email
+    $totalVotes = Vote::where('email', $validated['email'])->count();
+    if ($totalVotes >= 3) {
+        return response()->json(['message' => 'Səs limiti: hər e-poçt yalnız 3 videoya səs verə bilər'], 429);
+    }
+
     $existing = Vote::where('email', $validated['email'])
         ->where('video_id', $validated['video_id'])
         ->first();
