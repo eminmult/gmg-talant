@@ -2874,20 +2874,6 @@ function renderCards() {
                 </div>
                 <div class="card-title">${v.title}</div>
                 <div class="card-desc">${(v.desc||'').slice(0, 80)}${v.desc && v.desc.length > 80 ? '...' : ''}</div>
-                <!-- card-footer commented out
-                <div class="card-footer">
-                    <div class="card-like-area">
-                        <button class="card-like-btn" onclick="event.stopPropagation(); openModal(${v.id})">
-                            <svg class="heart-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                            ${_siteTexts.modal_like_btn || 'Bəyən'}
-                        </button>
-                        <span class="card-like-count">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                            ${v.votes} ${_siteTexts.modal_votes_suffix || 'səs'}
-                        </span>
-                    </div>
-                </div>
-                -->
                 ${v.final_score != null ? `<div class="card-score-bar">
                     <div class="card-score-final">
                         <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
@@ -3084,9 +3070,10 @@ async function submitVote(e) {
     }
 }
 
-// ===== FILE UPLOAD =====
+// ===== FILE UPLOAD (disabled while apply-section is commented out) =====
 const fileInput = document.getElementById('formFile');
 const uploadArea = document.getElementById('fileUploadArea');
+if (uploadArea && fileInput) {
 const uploadContent = document.getElementById('fileUploadContent');
 const fileSelected = document.getElementById('fileSelected');
 const fileNameEl = document.getElementById('fileName');
@@ -3192,6 +3179,7 @@ async function submitApplication() {
         submitBtn.textContent = origText;
     }
 }
+} // end if (uploadArea && fileInput)
 
 // ===== JURY PANEL =====
 let isJuryLoggedIn = false;
