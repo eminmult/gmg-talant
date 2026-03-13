@@ -17,8 +17,16 @@ Route::get('/videos', function () {
         ->with('category', 'company')
         ->withCount('votes')
         ->orderBy('created_at', 'desc')
-        ->get()
-        ->map(fn (Video $v) => [
+        ->get();
+
+    $maxVotes = $videos->max('votes_count') ?: 1;
+
+    $videos = $videos->map(function (Video $v) use ($maxVotes) {
+        $juryAvg = $v->jury_average;
+        $publicScore = ($v->votes_count / $maxVotes) * 10;
+        $finalScore = round(0.6 * $juryAvg + 0.4 * $publicScore, 2);
+
+        return [
             'id' => $v->id,
             'title' => $v->title,
             'author' => $v->author_full_name,
@@ -27,11 +35,15 @@ Route::get('/videos', function () {
             'category' => $v->category?->slug,
             'duration' => $v->duration,
             'votes' => $v->votes_count,
+            'jury_average' => $juryAvg,
+            'public_score' => round($publicScore, 2),
+            'final_score' => $finalScore,
             'desc' => $v->description,
             'video_url' => $v->video_path ? Storage::disk('public')->url($v->video_path) : null,
             'thumb' => $v->thumbnail_path ? Storage::disk('public')->url($v->thumbnail_path) : null,
             'company' => $v->company?->name,
-        ]);
+        ];
+    })->sortByDesc('final_score')->values();
 
     return response()->json($videos);
 });
